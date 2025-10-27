@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import '../stylos/Dashboard.css'; // archivo CSS específico para el Dashboard
 import Clientes from "./Clientes";
-import Productos from "./productos";
+//import Productos from "./productos";
+import ProductosCriticos from "./ProductosCriticos";
 
 
 function Dashboard() {
@@ -37,11 +38,11 @@ function Dashboard() {
         </div>
 
         <div className="panel2">
-          <Productos />
+          <ProductosCriticos />
         </div>
       </section>
       </section>
-      <button onClick={handleLogout}>Cerrar sesión</button>
+      
     </div>
   );
 }

@@ -38,11 +38,8 @@ function NavbarDashboard() {
           {menuAbierto === "stock" && (
             <div className="submenu">
               <button onClick={() => navigate("/dashboard/Productos")}>Mostrar todo</button>
-              <button onClick={() => navigate("/dashboard/nuevo-producto")}>
+              <button onClick={() => navigate("/dashboard/ProductosCriticos")}>
                 Agregar producto
-              </button>
-              <button onClick={() => navigate("/dashboard/eliminar-producto")}>
-                Eliminar producto
               </button>
             </div>
           )}
@@ -54,12 +51,10 @@ function NavbarDashboard() {
           {menuAbierto === "clientes" && (
             <div className="submenu">
               <button onClick={() => navigate("/dashboard/clientes")}>Mostrar todo</button>
-              <button onClick={() => navigate("/dashboard/clientesform")}>
+              <button onClick={() => navigate("/dashboard/nuevo-cliente")}>
                 Nuevo cliente
               </button>
-              <button onClick={() => navigate("/dashboard/eliminar-cliente")}>
-                Eliminar cliente
-              </button>
+              
             </div>
           )}
         </div>
@@ -75,9 +70,7 @@ function NavbarDashboard() {
               <button onClick={() => navigate("/dashboard/nueva-venta")}>
                 Nueva venta
               </button>
-              <button onClick={() => navigate("/dashboard/eliminar-venta")}>
-                Eliminar venta
-              </button>
+              
             </div>
           )}
         </div>

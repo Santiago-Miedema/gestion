@@ -48,16 +48,18 @@
 .login-form label {
   margin-bottom: 0.3rem;
   font-weight: 600;
+  
+  
 }
 
-.login-form input {
+.login-form input{
   padding: 0.7rem;
   margin-bottom: 1rem;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-}
 
+}
 .login-form button {
   padding: 0.8rem;
   background: #00bfff;
@@ -108,5 +110,11 @@
     padding-top: 10px;
     padding-bottom: 30px;
     margin-top: 0px;
+    width: 90%;
   }
+  .login-form label {
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  }
+    
 }

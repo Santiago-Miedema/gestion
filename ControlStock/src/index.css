@@ -36,7 +36,7 @@ footer {
 
 /* === DASHBOARD PAGE === */
 .dashboard-page {
-  background-color: #fbfafa;
+  background: linear-gradient(180deg, #000000 0%, #e8f62a 100%);
   min-height: 90vh;
   overflow-y: auto; /* scroll */
   padding-top: 60px;

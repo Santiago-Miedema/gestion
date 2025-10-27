@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function Productos() {
+
+function ProductosCriticos() {
   const [productos, setProductos] = useState([]);
   const [filtro, setFiltro] = useState("");
 
@@ -12,7 +13,7 @@ function Productos() {
 
   const cargarProductos = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/productos");
+      const res = await axios.get("http://localhost:3001/productos-criticos");
       setProductos(res.data);
     } catch (error) {
       console.error("Error al obtener productos:", error);
@@ -29,12 +30,12 @@ function Productos() {
 
   return (
     <div className="dashboard-container">
-      <h2>Stock de Productos</h2>
+      <h2>Productos Criticos</h2>
 
       {/* 🔎 Buscador */}
       <div style={{ marginBottom: "15px" }}>
         <input
-        id="BuscadorProductos"
+          id="buscadorProductosCriticos"
           type="text"
           placeholder="Buscar producto..."
           value={filtro}
@@ -43,7 +44,8 @@ function Productos() {
             padding: "8px",
             width: "60%",
             borderRadius: "5px",
-            border: "1px solid #ccc",
+            border: "1px solid #ccc"
+            ,
           }}
         />
       </div>
@@ -51,37 +53,40 @@ function Productos() {
       {/* 📋 Tabla */}
       <table
         style={{
-          width: "100%",
+          width: "90%",
           borderCollapse: "collapse",
           textAlign: "left",
+          overflowX: "hidden",
         }}
       >
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Marca</th>
             <th>Categoría</th>
-            <th>Color</th>
+            <th>Marca</th>
             <th>Modelo</th>
+            <th>Color</th>
+            
             <th>Talle</th>
             <th>Stock</th>
             <th>Precio</th>
-            <th>Stock Mínimo</th>
+            
           </tr>
         </thead>
         <tbody>
           {productosFiltrados.length > 0 ? (
             productosFiltrados.map((p) => (
               <tr key={p.id_producto}>
-                <td>{p.id_producto}</td>
-                <td>{p.marca}</td>
                 <td>{p.categoria}</td>
-                <td>{p.color}</td>
+                <td>{p.marca}</td>
                 <td>{p.modelo}</td>
+                <td>{p.color}</td>
+                
                 <td>{p.talle}</td>
-                <td>{p.stock}</td>
+                <td style={{ color: p.stock <= 0 ? "red" : "#ff9800", fontWeight: "bold" }}>
+                {p.stock}
+                </td>
                 <td>${p.precio}</td>
-                <td>{p.stock_minimo}</td>
+                
               </tr>
             ))
           ) : (
@@ -97,6 +102,4 @@ function Productos() {
   );
 }
 
-export default Productos;
-
-
+export default ProductosCriticos;

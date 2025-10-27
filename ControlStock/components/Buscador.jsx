@@ -3,6 +3,7 @@ import React from "react";
 const Buscador = ({ valor, setValor, placeholder }) => {
   return (
     <input
+    id="Buscadorx"
       type="text"
       value={valor}
       onChange={(e) => setValor(e.target.value)}

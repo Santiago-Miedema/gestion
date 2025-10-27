@@ -10,6 +10,7 @@ import NavbarDashboard from "../components/navbarDashboard";
 import { AuthProvider, AuthContext } from "../components/AuthContext";
 import Clientes from "../components/Clientes";
 import Productos from "../components/productos";
+import ProductosCriticos from "../components/ProductosCriticos";
 
 
 
@@ -52,6 +53,13 @@ function AppContainer() {
             element={
               <ProtectedRoute>
                <Productos />
+                
+              </ProtectedRoute>}/>
+              <Route
+            path="/dashboard/productos-criticos"
+            element={
+              <ProtectedRoute>
+               <ProductosCriticos />
                 
               </ProtectedRoute>
             }

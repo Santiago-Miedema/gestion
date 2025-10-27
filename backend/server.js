@@ -62,30 +62,15 @@ app.post("/login", (req, res) => {
    });
  });
 
-
-// Agregar nuevo cliente
-app.post("/clientesForm", (req, res) => {
-  const { nombre, apellido, email, direccion } = req.body;
-
-  if (!nombre || !apellido || !email || !direccion) {
-    return res.status(400).json({ error: "Faltan datos del cliente" });
-  }
-
-  const q = `
-    INSERT INTO clientes (nombre, apellido, email, direccion)
-    VALUES (?, ?, ?, ?)
-  `;
-  db.query(q, [nombre, apellido, email, direccion], (err, data) => {
-    if (err) {
-      console.error("Error al agregar cliente:", err);
-      return res.status(500).json(err);
-    }
-    return res.json({
-      message: "Cliente agregado correctamente",
-      id: data.insertId,
-    });
-  });
-});
+// // Agregar cliente
+// app.post("/clientes", (req, res) => {
+//   const { nombre } = req.body;
+//   const q = "INSERT INTO clientes (nombre) VALUES (?)";
+//   db.query(q, [nombre], (err, data) => {
+//     if (err) return res.json(err);
+//     return res.json({ id: data.insertId, nombre });
+//   });
+// });
 
 // Eliminar cliente
  app.delete("/clientes/:id_cliente", (req, res) => {
@@ -133,6 +118,34 @@ app.get("/productos", (req, res) => {
     } else {
       res.json(rows);
     }
+  });
+});
+
+// 🔴 Obtener productos con stock crítico o por debajo del mínimo
+app.get("/productos-criticos", (req, res) => {
+  const q = `
+    SELECT 
+      p.id_producto,
+      m.marca,
+      c.categoria,
+      col.color,
+      mo.modelo,
+      p.talle,
+      p.stock,
+      p.precio,
+      p.stock_minimo
+    FROM productos p
+    JOIN marca m ON p.id_marca = m.id_marca
+    JOIN categoria c ON p.id_categoria = c.id_categoria
+    JOIN color col ON p.id_color = col.id_color
+    JOIN modelo mo ON p.id_modelo = mo.id_modelo
+    WHERE p.stock <= p.stock_minimo
+    ORDER BY p.stock, m.marca, mo.modelo;
+  `;
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
   });
 });
 

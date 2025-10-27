@@ -4,17 +4,28 @@
   margin-block-end: 60px;
   background-color: #cefb2a;
   width: 90%;
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow-x: hidden;
 }
 
+/* HEADER */
 .dashboard-header {
   margin-bottom: 20px;
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dashboard-header h1 {
   color: #000;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
+/* CONTENIDO */
 .dashboard-content {
   display: flex;
   flex-direction: column;
@@ -27,31 +38,52 @@
   flex-wrap: wrap;
 }
 
+/* PANELES */
 .panel1, .panel2 {
   flex: 1;
-  min-width: 300px;
+  min-width: 320px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  padding: 18px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-/* Tablas dentro del dashboard */
+.panel1:hover, .panel2:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* TITULOS DE SECCION */
+.panel1 h2, .panel2 h2 {
+  color: #000;
+  font-size: 1.3rem;
+  border-left: 5px solid #000;
+  padding-left: 10px;
+  margin-bottom: 15px;
+}
+
+/* TABLAS */
 .dashboard-content table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .dashboard-content th,
 .dashboard-content td {
   border: 1px solid #121211;
-  padding: 8px;
+  padding: 10px 12px;
   text-align: left;
+  font-size: 0.95rem;
 }
 
 .dashboard-content th {
-  background-color: #070000;
+  background-color: #000;
   color: #cefb2a;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .dashboard-content td {
@@ -59,25 +91,67 @@
   color: #000;
 }
 
-/* Botón de logout */
+.dashboard-content tbody tr:hover td {
+  background-color: rgba(206, 251, 42, 0.2);
+  cursor: pointer;
+}
+
+/* INPUTS / BUSCADORES */
+input[type="text"] {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #cefb2a;
+  outline: none;
+  box-shadow: 0 0 5px #cefb2a;
+}
+
+/* BOTON */
 button {
   margin-top: 20px;
   padding: 0.8rem 1.2rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #000;
   color: #cefb2a;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background-color: #333;
+  background-color: #1a1a1a;
+  transform: translateY(-2px);
 }
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
+  .dashboard-container {
+  padding: 20px;
+  overflow-y: auto;
+  margin-block-end: 60px;
+  background-color: #cefb2a;
+  width: 95%;
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  
+}
   .dashboard-content2 {
     flex-direction: column;
+  }
+  input[type="text"] {
+    width: 100%;
+  }
+
+  #username{
+    width: auto;
   }
 }

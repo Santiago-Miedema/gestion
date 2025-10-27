@@ -40,6 +40,7 @@ function Clientes() {
       {/* 📌 Nuevo cliente y buscador */}
       <div style={{ marginBottom: "10px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
       <input
+        id="BuscadorCliente"
           type="text"
           placeholder="Buscar cliente..."
           value={filtro}
@@ -57,7 +58,7 @@ function Clientes() {
             <th>Apellido</th>
             <th>Email</th>
             <th>Dirección</th>
-            <th>Acción</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -69,9 +70,7 @@ function Clientes() {
                 <td>{c.apellido}</td>
                 <td>{c.email}</td>
                 <td>{c.direccion}</td>
-                <td>
-                  <button onClick={() => eliminarCliente(c.id_cliente)}>Eliminar</button>
-                </td>
+              
               </tr>
             ))
           ) : (
