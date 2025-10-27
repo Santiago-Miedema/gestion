@@ -1,0 +1,42 @@
+/* Usamos la misma fuente Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+.footer {
+  background: linear-gradient(90deg, #1a1a1a, #333333);
+  color: #cccccc;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.4); /* sombra superior */
+}
+
+.footer-text {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #00bfff; /* efecto hover */
+}
+
+/* Responsive simple */
+@media (max-width: 500px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
