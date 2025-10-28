@@ -1,0 +1,82 @@
+.clientes-form-container {
+  background: #d4ff1e;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  color: #111;
+}
+
+.clientes-form-titulo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #000;
+}
+
+.clientes-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.clientes-form label {
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  color: #111;
+}
+
+.clientes-form input {
+  margin-top: 5px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.clientes-form input:focus {
+  background-color: #f3ffb6;
+  box-shadow: 0 0 5px rgba(100, 255, 0, 0.5);
+}
+
+.btn-agregar {
+  background: linear-gradient(90deg, #000, #333);
+  color: #d4ff1e;
+  border: none;
+  padding: 10px 0;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-agregar:hover {
+  background: linear-gradient(90deg, #111, #000);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .clientes-form-container {
+    padding: 20px;
+  }
+
+  .clientes-form {
+    gap: 12px;
+  }
+
+  .clientes-form input {
+    font-size: 0.9rem;
+  }
+
+  .btn-agregar {
+    font-size: 0.9rem;
+  }
+}

@@ -17,7 +17,7 @@ const db = mysql.createConnection({
 // Conexión
 db.connect(err => {
   if (err) {
-    console.error("Error al conectar a MySQL:", err);
+    console.error("Error al conectar a 3:", err);
     return;
   }
   console.log("Conectado a MySQL ✅");
@@ -71,25 +71,36 @@ app.get("/clientes-ultimos", (req, res) => {
   });
 });
 
-// // Agregar cliente
-// app.post("/clientes", (req, res) => {
-//   const { nombre } = req.body;
-//   const q = "INSERT INTO clientes (nombre) VALUES (?)";
-//   db.query(q, [nombre], (err, data) => {
-//     if (err) return res.json(err);
-//     return res.json({ id: data.insertId, nombre });
-//   });
-// });
+// ✅ Crear cliente
+app.post("/clientes", (req, res) => {
+  const { nombre, apellido, email, direccion } = req.body;
+
+  if (!nombre || !apellido || !email) {
+    return res.status(400).json({ error: "Campos obligatorios faltantes" });
+  }
+
+  const q = "INSERT INTO clientes (nombre, apellido, email, direccion) VALUES (?, ?, ?, ?)";
+  db.query(q, [nombre, apellido, email, direccion || null], (err, data) => {
+    if (err) {
+      console.error("Error al insertar cliente:", err);
+      return res.status(500).json({ error: "Error en el servidor" });
+    }
+    return res.json({ id: data.insertId, nombre, apellido, email, direccion });
+  });
+});
 
 // Eliminar cliente
- app.delete("/clientes/:id_cliente", (req, res) => {
-   const { id } = req.params;
-   const q = "DELETE FROM clientes WHERE id_cliente = ?";
-   db.query(q, [id_cliente], (err, data) => {
-     if (err) return res.json(err);
-     return res.json("Cliente eliminado");
-   });
- });
+app.delete("/clientes/:id_cliente", (req, res) => {
+  const { id_cliente } = req.params;
+  const q = "DELETE FROM clientes WHERE id_cliente = ?";
+  db.query(q, [id_cliente], (err, data) => {
+    if (err) {
+      console.error("Error al eliminar cliente:", err);
+      return res.status(500).json({ error: "Error al eliminar cliente" });
+    }
+    return res.json({ mensaje: "Cliente eliminado correctamente" });
+  });
+});
 
 // ============================
 // 🛒 Rutas: PRODUCTOS

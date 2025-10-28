@@ -11,6 +11,7 @@ import { AuthProvider, AuthContext } from "../components/AuthContext";
 import Clientes from "../components/Clientes";
 import Productos from "../components/productos";
 import ProductosCriticos from "../components/ProductosCriticos";
+import ClientesForm from "../components/ClientesForm";
 
 
 
@@ -45,6 +46,14 @@ function AppContainer() {
             element={
               <ProtectedRoute>
                 <Clientes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/nuevo-cliente"
+            element={
+              <ProtectedRoute>
+                <ClientesForm />
               </ProtectedRoute>
             }
           />

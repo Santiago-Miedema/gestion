@@ -1,42 +1,123 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../stylos/Clientes.css"; // 👈 Import del archivo de estilos
+import ClientesForm from "./ClientesForm";
+import "../stylos/Clientes.css";
 
 function Clientes() {
   const [clientes, setClientes] = useState([]);
-  const [nuevoCliente, setNuevoCliente] = useState("");
   const [filtro, setFiltro] = useState("");
+  const [mostrarAgregar, setMostrarAgregar] = useState(false);
+  const [mostrarEliminar, setMostrarEliminar] = useState(false);
+  const [nombreEliminar, setNombreEliminar] = useState("");
+  const [mensajeExito, setMensajeExito] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState("exito"); // ✅ para estilo del mensaje
 
   useEffect(() => {
     cargarClientes();
   }, []);
 
   const cargarClientes = async () => {
-    const res = await axios.get("http://localhost:3001/clientes");
-    const data = Array.isArray(res.data) ? res.data : [res.data];
-    setClientes(data);
+    try {
+      const res = await axios.get("http://localhost:3001/clientes");
+      const data = Array.isArray(res.data) ? res.data : [res.data];
+      setClientes(data);
+    } catch (error) {
+      mostrarMensajeTemporal("Error al cargar clientes ❌", "error");
+    }
   };
 
-  const agregarCliente = async () => {
-    if (!nuevoCliente.trim()) return;
-    await axios.post("http://localhost:3001/clientes", { nombre: nuevoCliente });
-    setNuevoCliente("");
-    cargarClientes();
+  const agregarCliente = async (nuevoCliente) => {
+    if (
+      !nuevoCliente.nombre.trim() ||
+      !nuevoCliente.apellido.trim() ||
+      !nuevoCliente.email.trim()
+    ) {
+      mostrarMensajeTemporal("Complete todos los campos obligatorios ❗", "error");
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:3001/clientes", nuevoCliente);
+      cargarClientes();
+      mostrarMensajeTemporal("Cliente agregado exitosamente ✅", "exito");
+    } catch (error) {
+      console.error("Error al agregar cliente:", error);
+      mostrarMensajeTemporal("Error al agregar cliente ❌", "error");
+    }
   };
 
-  const eliminarCliente = async (id) => {
-    await axios.delete(`http://localhost:3001/clientes/${id}`);
-    cargarClientes();
+  const eliminarCliente = async (e) => {
+    e.preventDefault();
+    if (!nombreEliminar.trim()) {
+      mostrarMensajeTemporal("Ingrese el nombre del cliente ❗", "error");
+      return;
+    }
+
+    const cliente = clientes.find(
+      (c) => c.nombre.toLowerCase() === nombreEliminar.toLowerCase()
+    );
+
+    if (!cliente) {
+      mostrarMensajeTemporal("Cliente no encontrado ❌", "error");
+      return;
+    }
+
+    try {
+      await axios.delete(`http://localhost:3001/clientes/${cliente.id_cliente}`);
+      cargarClientes();
+      setNombreEliminar("");
+      mostrarMensajeTemporal("Cliente eliminado exitosamente 🗑️", "exito");
+    } catch (error) {
+      console.error("Error al eliminar cliente:", error);
+      mostrarMensajeTemporal("Error al eliminar cliente ❌", "error");
+    }
+  };
+
+  const mostrarMensajeTemporal = (mensaje, tipo = "exito") => {
+    setMensajeExito(mensaje);
+    setTipoMensaje(tipo);
+    setTimeout(() => {
+      setMensajeExito("");
+      setMostrarAgregar(false);
+      setMostrarEliminar(false);
+    }, 2000);
   };
 
   const clientesFiltrados = clientes.filter((c) =>
-    c.nombre.toLowerCase().includes(filtro.toLowerCase())
+    c.nombre?.toLowerCase().includes(filtro.toLowerCase())
   );
+
+  const cerrarModales = () => {
+    setMostrarAgregar(false);
+    setMostrarEliminar(false);
+  };
 
   return (
     <div className="container-clientes">
-      <h2>Clientes</h2>
+      {/* ---------- Header con botones ---------- */}
+      <div className="clientes-header">
+        <h2>Clientes</h2>
+        <div className="clientes-buttons">
+          <button
+            onClick={() => {
+              setMostrarAgregar(true);
+              setMostrarEliminar(false);
+            }}
+          >
+            ➕ Agregar Cliente
+          </button>
+          <button
+            onClick={() => {
+              setMostrarEliminar(true);
+              setMostrarAgregar(false);
+            }}
+          >
+            🗑️ Eliminar Cliente
+          </button>
+        </div>
+      </div>
 
+      {/* ---------- Buscador ---------- */}
       <div className="buscador-container">
         <input
           id="BuscadorCliente"
@@ -48,6 +129,7 @@ function Clientes() {
         />
       </div>
 
+      {/* ---------- Tabla ---------- */}
       <table className="tabla-clientes">
         <thead>
           <tr>
@@ -78,10 +160,56 @@ function Clientes() {
           )}
         </tbody>
       </table>
+
+      {/* ---------- Modal Agregar Cliente ---------- */}
+      {mostrarAgregar && (
+        <div className="overlay" onClick={cerrarModales}>
+          <div
+            className="form-animado"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="cerrar-form" onClick={cerrarModales}>
+              ✖
+            </button>
+            <ClientesForm agregarCliente={agregarCliente} />
+          </div>
+        </div>
+      )}
+
+      {/* ---------- Modal Eliminar Cliente ---------- */}
+      {mostrarEliminar && (
+        <div className="overlay" onClick={cerrarModales}>
+          <div
+            className="form-animado"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="cerrar-form" onClick={cerrarModales}>
+              ✖
+            </button>
+            <form className="clientes-form eliminar-form" onSubmit={eliminarCliente}>
+              <h3>Eliminar cliente ❌</h3>
+              <input
+                type="text"
+                placeholder="Nombre del cliente"
+                value={nombreEliminar}
+                onChange={(e) => setNombreEliminar(e.target.value)}
+              />
+              <button type="submit" className="btn-eliminar">
+                Eliminar
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ---------- Modal de éxito / error ---------- */}
+      {mensajeExito && (
+        <div className={`modal-exito ${tipoMensaje}`}>
+          <p>{mensajeExito}</p>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Clientes;
-
-
