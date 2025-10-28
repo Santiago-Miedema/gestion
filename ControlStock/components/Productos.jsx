@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../stylos/Productos.css"; // Import del CSS
 
 function Productos() {
   const [productos, setProductos] = useState([]);
   const [filtro, setFiltro] = useState("");
 
-  // 🔹 Cargar productos al iniciar
   useEffect(() => {
     cargarProductos();
   }, []);
@@ -19,7 +19,6 @@ function Productos() {
     }
   };
 
-  // 🔍 Filtrar productos según el texto del buscador
   const productosFiltrados = productos.filter((p) =>
     Object.values(p)
       .join(" ")
@@ -28,41 +27,31 @@ function Productos() {
   );
 
   return (
-    <div className="dashboard-container">
+    <div className="productos-container">
       <h2>Stock de Productos</h2>
 
       {/* 🔎 Buscador */}
-      <div style={{ marginBottom: "15px" }}>
+      <div className="buscador-container">
         <input
-        id="BuscadorProductos"
+          id="BuscadorProductos"
           type="text"
           placeholder="Buscar producto..."
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
-          style={{
-            padding: "8px",
-            width: "60%",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className="input-buscador"
         />
       </div>
 
       {/* 📋 Tabla */}
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          textAlign: "left",
-        }}
-      >
+      <div className="tabla-scroll">
+      <table className="tabla-productos">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Marca</th>
             <th>Categoría</th>
-            <th>Color</th>
             <th>Modelo</th>
+            <th>Marca</th>
+            <th>Color</th>
             <th>Talle</th>
             <th>Stock</th>
             <th>Precio</th>
@@ -74,10 +63,10 @@ function Productos() {
             productosFiltrados.map((p) => (
               <tr key={p.id_producto}>
                 <td>{p.id_producto}</td>
-                <td>{p.marca}</td>
                 <td>{p.categoria}</td>
-                <td>{p.color}</td>
                 <td>{p.modelo}</td>
+                <td>{p.marca}</td>
+                <td>{p.color}</td>
                 <td>{p.talle}</td>
                 <td>{p.stock}</td>
                 <td>${p.precio}</td>
@@ -86,17 +75,19 @@ function Productos() {
             ))
           ) : (
             <tr>
-              <td colSpan="9" style={{ textAlign: "center", padding: "10px" }}>
+              <td colSpan="9" className="no-productos">
                 No se encontraron productos
               </td>
             </tr>
           )}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
 
 export default Productos;
+
 
 

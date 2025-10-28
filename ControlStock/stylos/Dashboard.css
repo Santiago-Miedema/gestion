@@ -96,22 +96,7 @@
   cursor: pointer;
 }
 
-/* INPUTS / BUSCADORES */
-input[type="text"] {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 2px solid #000;
-  background-color: #fff;
-  color: #000;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
 
-input[type="text"]:focus {
-  border-color: #cefb2a;
-  outline: none;
-  box-shadow: 0 0 5px #cefb2a;
-}
 
 /* BOTON */
 button {
@@ -147,11 +132,7 @@ button:hover {
   .dashboard-content2 {
     flex-direction: column;
   }
-  input[type="text"] {
-    width: 100%;
-  }
+  
 
-  #username{
-    width: auto;
-  }
+  
 }

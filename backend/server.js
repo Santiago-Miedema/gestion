@@ -62,6 +62,15 @@ app.post("/login", (req, res) => {
    });
  });
 
+ // 🟢 Obtener los últimos 4 clientes
+app.get("/clientes-ultimos", (req, res) => {
+  const q = "SELECT * FROM clientes ORDER BY id_cliente DESC LIMIT 4";
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 // // Agregar cliente
 // app.post("/clientes", (req, res) => {
 //   const { nombre } = req.body;

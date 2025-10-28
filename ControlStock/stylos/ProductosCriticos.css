@@ -1,0 +1,91 @@
+
+/* Reutilizamos estilos base del módulo de clientes */
+.dashboard-container {
+  padding: 20px;
+}
+
+.buscador-container {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-buscador {
+  padding: 8px;
+  width: 60%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+/* INPUTS / BUSCADORES */
+ #buscadorProductosCriticos {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+#buscadorProductosCriticos:focus {
+  border-color: #cefb2a;
+  outline: none;
+  box-shadow: 0 0 5px #cefb2a;
+}
+
+
+.tabla-clientes,
+.tabla-productos {
+  width: 90%;
+  border-collapse: collapse;
+  text-align: left;
+  overflow-x: hidden;
+}
+
+.tabla-clientes th,
+.tabla-clientes td {
+  border: 1px solid #989696;
+  padding: 8px;
+}
+
+.tabla-clientes th {
+  background-color: #120e0e;
+}
+
+.no-clientes {
+  text-align: center;
+  padding: 10px;
+}
+
+/* ===== STOCK ===== */
+.stock {
+  font-weight: bold;
+}
+
+.stock-rojo {
+  color: red !important;
+  background-color: rgba(255, 0, 0, 0.15);
+}
+
+.stock-amarillo {
+  color: #ff9800 !important;
+  background-color: rgba(255, 193, 7, 0.15);
+}
+
+
+/* Contenedor scroll de la tabla */
+.tabla-scroll {
+  max-height: 400px;       /* Altura máxima antes de que aparezca el scroll vertical */
+  overflow-y: auto;        /* Scroll vertical */
+  overflow-x: auto;        /* Scroll horizontal si se desborda */
+  width: 100%;             /* Que ocupe todo el ancho del contenedor */
+  border: 1px solid #ccc;  /* Borde para diferenciar la zona */
+  border-radius: 8px;
+}
+
+/* Para que la tabla no se desborde del div */
+.tabla-productos {
+  width: 100%;
+  table-layout: auto;
+}

@@ -1,0 +1,94 @@
+/* Contenedor principal */
+.productos-container {
+  padding: 20px;
+  background-color: #cefb2a;
+  width: 100%;          /* Mejor usar 100% para responsividad */
+  max-width: 1200px;    /* Máximo ancho deseado */
+  margin: 0 auto;       /* Centrar el contenedor */
+  box-sizing: border-box;
+  border-radius: 30px;
+  margin-top: 70px;    /* Altura navbar */
+  margin-bottom: 70px; /* Altura footer */
+  overflow-y: auto;
+}
+
+/* Buscador */
+.buscador-container {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.input-buscador {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.95rem;
+  width: 100%;          /* Responsive */
+  max-width: 400px;     /* No muy grande en pantallas grandes */
+  transition: all 0.3s ease;
+}
+
+.input-buscador:focus {
+  border-color: #cefb2a;
+  outline: none;
+  box-shadow: 0 0 5px #cefb2a;
+}
+
+/* Contenedor de tabla con scroll */
+.tabla-scroll {
+  width: 100%;
+  overflow-x: auto;      /* Scroll horizontal si es necesario */
+  overflow-y: auto;      /* Scroll vertical si hay muchas filas */
+  max-height: 500px;     /* Ajustar según necesidad */
+  border: 1px solid #000;
+  border-radius: 6px;
+}
+
+/* Tabla */
+.tabla-productos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 700px;      /* Para mantener columnas visibles en scroll horizontal */
+}
+
+.tabla-productos th,
+.tabla-productos td {
+  border: 1px solid #090909;
+  padding: 8px;
+}
+
+.tabla-productos th {
+  background-color: #000;
+  color: #cefb2a;
+}
+
+.tabla-productos tr {
+  background-color: #fff;
+  color: #000;
+}
+
+.no-productos {
+  text-align: center;
+  padding: 10px;
+}
+
+/* Hover */
+.tabla-productos tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Media queries para pantallas pequeñas */
+@media (max-width: 768px) {
+  .input-buscador {
+    max-width: 100%;
+  }
+
+  .tabla-productos {
+    font-size: 0.85rem;
+  }
+}

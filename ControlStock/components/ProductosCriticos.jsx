@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import "../stylos/ProductosCriticos.css"; // 👈 Import del CSS
 
 function ProductosCriticos() {
   const [productos, setProductos] = useState([]);
   const [filtro, setFiltro] = useState("");
 
-  // 🔹 Cargar productos al iniciar
   useEffect(() => {
     cargarProductos();
   }, []);
@@ -20,7 +19,6 @@ function ProductosCriticos() {
     }
   };
 
-  // 🔍 Filtrar productos según el texto del buscador
   const productosFiltrados = productos.filter((p) =>
     Object.values(p)
       .join(" ")
@@ -28,76 +26,69 @@ function ProductosCriticos() {
       .includes(filtro.toLowerCase())
   );
 
+  // Función para determinar la clase CSS según el stock
+  const getStockClass = (stock, stockMinimo) => {
+    if (stock <= 0) return "stock-rojo";
+    if (stock > 0 && stock <= stockMinimo) return "stock-amarillo";
+    return "";
+  };
+
   return (
     <div className="dashboard-container">
-      <h2>Productos Criticos</h2>
+      <h2>Productos Críticos</h2>
 
       {/* 🔎 Buscador */}
-      <div style={{ marginBottom: "15px" }}>
+      <div className="buscador-container">
         <input
           id="buscadorProductosCriticos"
           type="text"
           placeholder="Buscar producto..."
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
-          style={{
-            padding: "8px",
-            width: "60%",
-            borderRadius: "5px",
-            border: "1px solid #ccc"
-            ,
-          }}
+          className="input-buscador"
         />
       </div>
 
-      {/* 📋 Tabla */}
-      <table
-        style={{
-          width: "90%",
-          borderCollapse: "collapse",
-          textAlign: "left",
-          overflowX: "hidden",
-        }}
-      >
-        <thead>
-          <tr>
-            <th>Categoría</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Color</th>
-            
-            <th>Talle</th>
-            <th>Stock</th>
-            <th>Precio</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          {productosFiltrados.length > 0 ? (
-            productosFiltrados.map((p) => (
-              <tr key={p.id_producto}>
-                <td>{p.categoria}</td>
-                <td>{p.marca}</td>
-                <td>{p.modelo}</td>
-                <td>{p.color}</td>
-                
-                <td>{p.talle}</td>
-                <td style={{ color: p.stock <= 0 ? "red" : "#ff9800", fontWeight: "bold" }}>
-                {p.stock}
-                </td>
-                <td>${p.precio}</td>
-                
-              </tr>
-            ))
-          ) : (
+            {/* 📋 Tabla con scroll */}
+      <div className="tabla-scroll">
+        <table className="tabla-clientes tabla-productos">
+          <thead>
             <tr>
-              <td colSpan="9" style={{ textAlign: "center", padding: "10px" }}>
-                No se encontraron productos
-              </td>
+              
+              <th>Modelo</th>
+              <th>Marca</th>
+              <th>Color</th>
+              <th>Talle</th>
+              <th>Stock</th>
+              <th>Precio</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {productosFiltrados.length > 0 ? (
+              productosFiltrados.map((p) => (
+                <tr key={p.id_producto}>
+                  
+                  <td>{p.modelo}</td>
+                  <td>{p.marca}</td>
+                  <td>{p.color}</td>
+                  <td>{p.talle}</td>
+                  <td className={`stock ${getStockClass(p.stock, p.stock_minimo)}`}>
+                    {p.stock}
+                  </td>
+                  <td>${p.precio}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="9" className="no-clientes">
+                  No se encontraron productos
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 }

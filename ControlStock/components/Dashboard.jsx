@@ -6,6 +6,7 @@ import '../stylos/Dashboard.css'; // archivo CSS específico para el Dashboard
 import Clientes from "./Clientes";
 //import Productos from "./productos";
 import ProductosCriticos from "./ProductosCriticos";
+import UltimosClientes from "./UltimosClientes";
 
 
 function Dashboard() {
@@ -34,7 +35,7 @@ function Dashboard() {
       <section className="dashboard-content">
         <section className="dashboard-content2">
         <div className="panel1">
-          <Clientes />
+          <UltimosClientes />
         </div>
 
         <div className="panel2">

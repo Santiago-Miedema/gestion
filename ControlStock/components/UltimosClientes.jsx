@@ -1,45 +1,40 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../stylos/Clientes.css"; // 👈 Import del archivo de estilos
+import "../stylos/UltimosClientes.css"; // 👈 Usa los mismos estilos
 
-function Clientes() {
+function UltimosClientes() {
   const [clientes, setClientes] = useState([]);
-  const [nuevoCliente, setNuevoCliente] = useState("");
   const [filtro, setFiltro] = useState("");
 
   useEffect(() => {
-    cargarClientes();
+    cargarUltimosClientes();
   }, []);
 
-  const cargarClientes = async () => {
-    const res = await axios.get("http://localhost:3001/clientes");
-    const data = Array.isArray(res.data) ? res.data : [res.data];
-    setClientes(data);
-  };
-
-  const agregarCliente = async () => {
-    if (!nuevoCliente.trim()) return;
-    await axios.post("http://localhost:3001/clientes", { nombre: nuevoCliente });
-    setNuevoCliente("");
-    cargarClientes();
-  };
-
-  const eliminarCliente = async (id) => {
-    await axios.delete(`http://localhost:3001/clientes/${id}`);
-    cargarClientes();
+  const cargarUltimosClientes = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/clientes-ultimos");
+      const data = Array.isArray(res.data) ? res.data : [res.data];
+      setClientes(data);
+    } catch (error) {
+      console.error("Error al obtener los últimos clientes:", error);
+    }
   };
 
   const clientesFiltrados = clientes.filter((c) =>
-    c.nombre.toLowerCase().includes(filtro.toLowerCase())
+    Object.values(c)
+      .join(" ")
+      .toLowerCase()
+      .includes(filtro.toLowerCase())
   );
 
   return (
-    <div className="container-clientes">
-      <h2>Clientes</h2>
+    <div className="dashboard-container">
+      <h2>Últimos Clientes</h2>
 
+      {/* 🔎 Buscador */}
       <div className="buscador-container">
         <input
-          id="BuscadorCliente"
+          id="BuscadorUltimosClientes"
           type="text"
           placeholder="Buscar cliente..."
           value={filtro}
@@ -48,6 +43,7 @@ function Clientes() {
         />
       </div>
 
+      {/* 📋 Tabla */}
       <table className="tabla-clientes">
         <thead>
           <tr>
@@ -71,7 +67,7 @@ function Clientes() {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="no-clientes">
+              <td colSpan="5" className="no-clientes">
                 No se encontraron clientes
               </td>
             </tr>
@@ -82,6 +78,4 @@ function Clientes() {
   );
 }
 
-export default Clientes;
-
-
+export default UltimosClientes;
