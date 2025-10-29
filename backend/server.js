@@ -101,6 +101,24 @@ app.delete("/clientes/:id_cliente", (req, res) => {
     return res.json({ mensaje: "Cliente eliminado correctamente" });
   });
 });
+// 🟡 Editar cliente
+app.put("/clientes/:id_cliente", (req, res) => {
+  const { id_cliente } = req.params;
+  const { nombre, apellido, email, direccion } = req.body;
+
+  const q = `
+    UPDATE clientes 
+    SET nombre = ?, apellido = ?, email = ?, direccion = ?
+    WHERE id_cliente = ?`;
+
+  db.query(q, [nombre, apellido, email, direccion, id_cliente], (err, data) => {
+    if (err) {
+      console.error("Error al actualizar cliente:", err);
+      return res.status(500).json({ error: "Error al actualizar cliente" });
+    }
+    return res.json({ mensaje: "Cliente actualizado correctamente" });
+  });
+});
 
 // ============================
 // 🛒 Rutas: PRODUCTOS

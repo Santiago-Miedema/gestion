@@ -176,6 +176,39 @@
   animation: slideDown 1s ease forwards;
 }
 
+.acciones button {
+  margin: 2px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-eliminar {
+  background: #e53935;
+  color: white;
+}
+
+.btn-guardar {
+  background: #2196f3;
+  color: white;
+}
+
+.btn-cancelar {
+  background: gray;
+  color: white;
+}
+
+.acciones button:hover {
+  opacity: 0.8;
+}
+
+
 @keyframes slideDown {
   0% {
     opacity: 0;
