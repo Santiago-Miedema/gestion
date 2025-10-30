@@ -1,0 +1,87 @@
+.ventas-container {
+  background-color: #d6ff00;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  margin: 40px auto;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #333;
+}
+
+.ventas-container h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #2b2b2b;
+  letter-spacing: 0.5px;
+}
+
+/* 🔍 Buscador */
+.buscador-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+}
+
+.input-buscador {
+  padding: 10px 14px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.input-buscador:focus {
+  border-color: #0078ff;
+  outline: none;
+  box-shadow: 0 0 6px rgba(0, 120, 255, 0.3);
+}
+
+/* 📊 Tabla */
+.tabla-scroll {
+  overflow-x: auto;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.tabla-ventas {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  min-width: 700px;
+}
+
+.tabla-ventas th {
+  background-color: #000;
+  color: #d6ff00;
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tabla-ventas td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tabla-ventas tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.tabla-ventas tr:hover {
+  background-color: #eef6ff;
+  transition: background 0.2s ease;
+}
+
+/* 🔸 Sin resultados */
+.no-ventas {
+  text-align: center;
+  padding: 20px;
+  color: #777;
+  font-style: italic;
+}

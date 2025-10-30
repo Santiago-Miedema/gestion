@@ -207,6 +207,72 @@ app.get("/productos-criticos", (req, res) => {
 // });
 
 
+// Crear venta
+app.post("/venta", (req, res) => {
+  const { id_cliente, id_usuario, importeTotal } = req.body;
+  const q = "INSERT INTO venta (id_cliente, id_usuario, importeTotal) VALUES (?, ?, ?)";
+  db.query(q, [id_cliente, id_usuario, importeTotal], (err, result) => {
+    if (err) return res.status(500).json({ error: "Error al crear venta" });
+    res.json({ id_venta: result.insertId });
+  });
+});
+
+
+// Crear detalle de venta
+app.post("/venta-detalle", (req, res) => {
+  const { id_venta, id_producto, cantidad, precio, fecha, tiempo_real } = req.body;
+  const q = `
+    INSERT INTO venta_detalle (id_venta, id_producto, cantidad, precio, fecha, tiempo_real)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+  db.query(q, [id_venta, id_producto, cantidad, precio, fecha, tiempo_real], (err, result) => {
+    if (err) return res.status(500).json({ error: "Error al crear detalle de venta" });
+    res.json({ success: true });
+  });
+});
+
+// Actualizar stock del producto
+app.put("/actualizar-stock/:id_producto", (req, res) => {
+  const { id_producto } = req.params;
+  const { cantidad } = req.body;
+
+  // Restar la cantidad vendida
+  const q = "UPDATE productos SET stock = stock - ? WHERE id_producto = ?";
+  db.query(q, [cantidad, id_producto], (err, result) => {
+    if (err) return res.status(500).json({ error: "Error al actualizar stock" });
+    res.json({ success: true });
+  });
+});
+// 🧾 Obtener todas las ventas con nombre del cliente y usuario
+app.get("/ventas", (req, res) => {
+  const q = `
+    SELECT 
+      v.id_venta,
+      c.nombre AS cliente_nombre,
+      c.apellido AS cliente_apellido,
+      u.usuario AS usuario_nombre,
+      v.importeTotal,
+      DATE_FORMAT(MAX(d.fecha), '%Y-%m-%d') AS fecha
+    FROM venta v
+    JOIN clientes c ON v.id_cliente = c.id_cliente
+    JOIN usuarios u ON v.id_usuario = u.id_usuario
+    JOIN venta_detalle d ON v.id_venta = d.id_venta
+    GROUP BY v.id_venta, c.nombre, c.apellido, u.usuario, v.importeTotal
+    ORDER BY v.id_venta DESC;
+  `;
+
+  db.query(q, (err, rows) => {
+    if (err) {
+      console.error("Error al obtener ventas:", err);
+      res.status(500).json({ error: "Error al obtener ventas" });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
+
+
 app.listen(3001, () => {
   console.log("Servidor backend en http://localhost:3001");
 });

@@ -93,6 +93,7 @@ function NavbarDashboard() {
               <button onClick={() => handleNavigate("/dashboard/nueva-venta")}>
                 Nueva venta
               </button>
+
             </div>
           )}
         </div>
