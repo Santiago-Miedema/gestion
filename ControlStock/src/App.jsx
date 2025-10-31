@@ -14,6 +14,8 @@ import ProductosCriticos from "../components/ProductosCriticos";
 import ClientesForm from "../components/ClientesForm";
 import NuevaVenta from "../components/NuevaVenta";
 import Ventas from "../components/Ventas";
+import GestionarStock from "../components/GestionarStock";
+import ProductoForm from "../components/ProductoForm";
 
 // 🔒 Proteger rutas
 function ProtectedRoute({ children }) {
@@ -115,6 +117,24 @@ function AppContainer() {
             }
           />
 
+          <Route
+            path="/dashboard/gestionar-stock"
+            element={
+              <ProtectedRoute>
+                <GestionarStock />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard/gestionar-productos"
+            element={
+              <ProtectedRoute>
+                <ProductoForm />
+              </ProtectedRoute>
+            }
+          />
+          
         </Routes>
 
       </main>
