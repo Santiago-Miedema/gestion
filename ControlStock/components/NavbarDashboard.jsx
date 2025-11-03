@@ -52,8 +52,6 @@ function NavbarDashboard() {
       </div>
 
       <div className={`navbar-right ${menuMovil ? "open" : ""}`}>
-
-                
         {/* === STOCK === */}
         <div className="menu-item">
           <button onClick={() => toggleMenu("stock")}>Stock ▾</button>
@@ -65,12 +63,6 @@ function NavbarDashboard() {
               <button onClick={() => handleNavigate("/dashboard/productos-criticos")}>
                 Productos críticos
               </button>
-              <button onClick={() => handleNavigate("/dashboard/gestionar-stock")}>
-                Gestionar stock
-              </button> {/* 🔹 Nueva opción */}
-              <button onClick={() => handleNavigate("/dashboard/gestionar-productos")}>
-                Gestionar productos
-              </button> {/* 🔹 Nueva opción */}
             </div>
           )}
         </div>
@@ -105,7 +97,6 @@ function NavbarDashboard() {
             </div>
           )}
         </div>
-        
 
         <button onClick={handleLogout} className="logout-btn">
           Cerrar sesión

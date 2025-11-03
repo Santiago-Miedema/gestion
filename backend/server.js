@@ -188,6 +188,25 @@ app.get("/productos-criticos", (req, res) => {
 });
 
 
+// app.post("/productos", (req, res) => {
+//   const { materia } = req.body;
+//   const q = "INSERT INTO productos (materia) VALUES (?)";
+//   db.query(q, [materia], (err, data) => {
+//     if (err) return res.json(err);
+//     return res.json({ id: data.insertId, materia });
+//   });
+// });
+
+//   app.delete("/materias/:id", (req, res) => {
+//   const { id } = req.params;
+//   const q = "DELETE FROM materias WHERE id = ?";
+//   db.query(q, [id], (err, data) => {
+//     if (err) return res.json(err);
+//     return res.json("materia eliminada");
+//   });
+// });
+
+
 // Crear venta
 app.post("/venta", (req, res) => {
   const { id_cliente, id_usuario, importeTotal } = req.body;
@@ -248,215 +267,6 @@ app.get("/ventas", (req, res) => {
       res.status(500).json({ error: "Error al obtener ventas" });
     } else {
       res.json(rows);
-    }
-  });
-});
-
-// ============================
-// 📋 Listas de apoyo para el formulario
-// ============================
-
-// Obtener todas las marcas
-app.get("/marcas", (req, res) => {
-  const q = "SELECT * FROM marca ORDER BY marca";
-  db.query(q, (err, data) => {
-    if (err) return res.status(500).json({ error: "Error al obtener marcas" });
-    res.json(data);
-  });
-});
-
-// Obtener todas las categorías
-app.get("/categorias", (req, res) => {
-  const q = "SELECT * FROM categoria ORDER BY categoria";
-  db.query(q, (err, data) => {
-    if (err) return res.status(500).json({ error: "Error al obtener categorías" });
-    res.json(data);
-  });
-});
-
-// Obtener todos los modelos
-app.get("/modelos", (req, res) => {
-  const q = "SELECT * FROM modelo ORDER BY modelo";
-  db.query(q, (err, data) => {
-    if (err) return res.status(500).json({ error: "Error al obtener modelos" });
-    res.json(data);
-  });
-});
-
-// Obtener todos los colores
-app.get("/colores", (req, res) => {
-  const q = "SELECT * FROM color ORDER BY color";
-  db.query(q, (err, data) => {
-    if (err) return res.status(500).json({ error: "Error al obtener colores" });
-    res.json(data);
-  });
-});
-
-// ============================
-// 🔍 Verificar o crear registros base
-// ============================
-
-// Marca
-app.post("/marcas", (req, res) => {
-  const { nombre } = req.body;
-  const qCheck = "SELECT id_marca FROM marca WHERE marca = ?";
-  db.query(qCheck, [nombre], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.length > 0) return res.json({ id: result[0].id_marca });
-
-    const qInsert = "INSERT INTO marca (marca) VALUES (?)";
-    db.query(qInsert, [nombre], (err2, data) => {
-      if (err2) return res.status(500).json({ error: err2 });
-      res.json({ id: data.insertId });
-    });
-  });
-});
-
-// Categoría
-app.post("/categorias", (req, res) => {
-  const { nombre } = req.body;
-  const qCheck = "SELECT id_categoria FROM categoria WHERE categoria = ?";
-  db.query(qCheck, [nombre], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.length > 0) return res.json({ id: result[0].id_categoria });
-
-    const qInsert = "INSERT INTO categoria (categoria) VALUES (?)";
-    db.query(qInsert, [nombre], (err2, data) => {
-      if (err2) return res.status(500).json({ error: err2 });
-      res.json({ id: data.insertId });
-    });
-  });
-});
-
-// Modelo
-app.post("/modelos", (req, res) => {
-  const { nombre } = req.body;
-  const qCheck = "SELECT id_modelo FROM modelo WHERE modelo = ?";
-  db.query(qCheck, [nombre], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.length > 0) return res.json({ id: result[0].id_modelo });
-
-    const qInsert = "INSERT INTO modelo (modelo) VALUES (?)";
-    db.query(qInsert, [nombre], (err2, data) => {
-      if (err2) return res.status(500).json({ error: err2 });
-      res.json({ id: data.insertId });
-    });
-  });
-});
-
-// Color
-app.post("/colores", (req, res) => {
-  const { nombre } = req.body;
-  const qCheck = "SELECT id_color FROM color WHERE color = ?";
-  db.query(qCheck, [nombre], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    if (result.length > 0) return res.json({ id: result[0].id_color });
-
-    const qInsert = "INSERT INTO color (color) VALUES (?)";
-    db.query(qInsert, [nombre], (err2, data) => {
-      if (err2) return res.status(500).json({ error: err2 });
-      res.json({ id: data.insertId });
-    });
-  });
-});
-
-// ============================
-// ➕ Crear un nuevo producto
-// ============================
-app.post("/productos", (req, res) => {
-  const { id_marca, id_categoria, id_modelo, id_color, talle, stock, precio, stock_minimo } = req.body;
-
-  const q = `
-    INSERT INTO productos (id_marca, id_categoria, id_modelo, id_color, talle, stock, precio, stock_minimo)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-  db.query(q, [id_marca, id_categoria, id_modelo, id_color, talle, stock, precio, stock_minimo], (err, data) => {
-    if (err) return res.status(500).json({ error: "Error al crear producto" });
-    res.json({ message: "Producto agregado correctamente", id_producto: data.insertId });
-  });
-});
-
-// ============================
-// ❌ Eliminar producto
-// ============================
-app.delete("/productos/:id", (req, res) => {
-  const { id } = req.params;
-  const q = "DELETE FROM productos WHERE id_producto = ?";
-  db.query(q, [id], (err, data) => {
-    if (err) return res.status(500).json({ error: "Error al eliminar producto" });
-    res.json({ message: "Producto eliminado correctamente" });
-  });
-});
-
-// 🟢 Agregar un nuevo producto (versión corregida)
-app.post("/productos/agregar", (req, res) => {
-  const { marca, categoria, color, modelo, talle, stock, precio, stock_minimo } = req.body;
-
-  if (!marca || !categoria || !color || !modelo || !talle || !stock || !precio) {
-    return res.status(400).json({ error: "Faltan campos obligatorios" });
-  }
-
-  // 🔹 Función auxiliar para obtener o crear registros relacionados
-  const getOrCreate = (tabla, columna, valor) => {
-    return new Promise((resolve, reject) => {
-      db.query(`SELECT id_${tabla} FROM ${tabla} WHERE ${columna} = ?`, [valor], (err, result) => {
-        if (err) return reject(err);
-        if (result.length > 0) return resolve(result[0][`id_${tabla}`]);
-        db.query(`INSERT INTO ${tabla} (${columna}) VALUES (?)`, [valor], (err2, insert) => {
-          if (err2) return reject(err2);
-          resolve(insert.insertId);
-        });
-      });
-    });
-  };
-
-  // 🔹 Paso 1: obtener o crear IDs relacionados
-  Promise.all([
-    getOrCreate("marca", "marca", marca),
-    getOrCreate("categoria", "categoria", categoria),
-    getOrCreate("modelo", "modelo", modelo),
-    getOrCreate("color", "color", color)
-  ])
-    .then(([id_marca, id_categoria, id_modelo, id_color]) => {
-      // 🔹 Paso 2: insertar el producto
-      const q = `
-        INSERT INTO productos (id_marca, id_categoria, id_modelo, id_color, talle, stock, precio, stock_minimo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `;
-      db.query(q, [id_marca, id_categoria, id_modelo, id_color, talle, stock, precio, stock_minimo || 0], (err, result) => {
-        if (err) {
-          console.error("Error al insertar producto:", err);
-          return res.status(500).json({ error: "Error al guardar producto" });
-        }
-        console.log("✅ Producto agregado:", result.insertId);
-        res.json({ success: true, id_producto: result.insertId });
-      });
-    })
-    .catch(err => {
-      console.error("Error en inserción de datos relacionados:", err);
-      res.status(500).json({ error: "Error al procesar producto" });
-    });
-});
-
-// 🔐 Verificar contraseña de usuario (para confirmación de eliminación)
-app.post("/verificar-clave", (req, res) => {
-  const { clave } = req.body;
-
-  if (!clave) {
-    return res.status(400).json({ success: false, message: "Falta la clave" });
-  }
-
-  const q = "SELECT * FROM usuarios WHERE clave = ?";
-  db.query(q, [clave], (err, result) => {
-    if (err) {
-      console.error("Error al verificar clave:", err);
-      return res.status(500).json({ success: false, message: "Error en el servidor" });
-    }
-
-    if (result.length > 0) {
-      return res.json({ success: true, message: "Clave válida" });
-    } else {
-      return res.json({ success: false, message: "Clave incorrecta" });
     }
   });
 });
