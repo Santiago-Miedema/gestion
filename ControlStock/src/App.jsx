@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import "./index.css";
 import Navbar from "../components/Navbar";
@@ -14,29 +14,12 @@ import ProductosCriticos from "../components/ProductosCriticos";
 import ClientesForm from "../components/ClientesForm";
 import NuevaVenta from "../components/NuevaVenta";
 import Ventas from "../components/Ventas";
+import ClientesFormPage from "../components/clienteFormPage";
 
 // 🔒 Proteger rutas
 function ProtectedRoute({ children }) {
   const { isLogged } = useContext(AuthContext);
   return isLogged ? children : <Navigate to="/" />;
-}
-
-// 🔙 Botón volver al Dashboard
-function VolverInicio() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const mostrarBoton =
-    location.pathname.startsWith("/dashboard") &&
-    location.pathname !== "/dashboard";
-
-  if (!mostrarBoton) return null;
-
-  return (
-    <button className="volver-btn" onClick={() => navigate("/dashboard")}>
-      ⬅ Volver al inicio
-    </button>
-  );
 }
 
 function AppContainer() {
@@ -45,12 +28,10 @@ function AppContainer() {
 
   return (
     <div className={isDashboard ? "dashboard-page" : "login-page"}>
+      {/* Navbar distinto según página */}
       {isDashboard ? <NavbarDashboard /> : <Navbar />}
 
       <main className="main-content">
-        <div className="volver-boton">
-          <VolverInicio /> {/* 🔙 botón arriba */}
-        </div>
         <Routes>
           <Route path="/" element={<Login />} />
 
@@ -76,10 +57,15 @@ function AppContainer() {
             path="/dashboard/nuevo-cliente"
             element={
               <ProtectedRoute>
-                <ClientesForm />
+                <ClientesFormPage />
               </ProtectedRoute>
             }
           />
+          <Route 
+          path="/clientes-form" 
+          element={<ClientesFormPage />} 
+          />
+
 
           <Route
             path="/dashboard/productos"
@@ -98,6 +84,7 @@ function AppContainer() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/dashboard/nueva-venta"
             element={
@@ -106,6 +93,7 @@ function AppContainer() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/dashboard/ventas"
             element={
@@ -114,9 +102,7 @@ function AppContainer() {
               </ProtectedRoute>
             }
           />
-
         </Routes>
-
       </main>
 
       <Footer />

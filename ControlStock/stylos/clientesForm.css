@@ -1,3 +1,4 @@
+/* === CONTENEDOR PRINCIPAL === */
 .clientes-form-container {
   background: #d4ff1e;
   padding: 25px;
@@ -7,16 +8,19 @@
   max-width: 450px;
   margin: 0 auto;
   color: #111;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
+/* === TÍTULO === */
 .clientes-form-titulo {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 20px;
   text-align: center;
   color: #000;
 }
 
+/* === FORMULARIO === */
 .clientes-form {
   display: flex;
   flex-direction: column;
@@ -31,6 +35,7 @@
   color: #111;
 }
 
+/* === INPUTS === */
 .clientes-form input {
   margin-top: 5px;
   padding: 10px 12px;
@@ -38,31 +43,50 @@
   border-radius: 10px;
   font-size: 0.95rem;
   outline: none;
+  background: #fff;
   transition: all 0.2s ease;
 }
 
 .clientes-form input:focus {
   background-color: #f3ffb6;
   box-shadow: 0 0 5px rgba(100, 255, 0, 0.5);
+  transform: scale(1.02);
 }
 
+/* === BOTÓN === */
 .btn-agregar {
   background: linear-gradient(90deg, #000, #333);
   color: #d4ff1e;
   border: none;
-  padding: 10px 0;
+  padding: 12px 0;
   font-weight: 700;
   border-radius: 10px;
   cursor: pointer;
   margin-top: 10px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
   transition: all 0.3s ease;
 }
 
 .btn-agregar:hover {
   background: linear-gradient(90deg, #111, #000);
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* === ANIMACIÓN === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE === */
 @media (max-width: 600px) {
   .clientes-form-container {
     padding: 20px;
@@ -78,5 +102,6 @@
 
   .btn-agregar {
     font-size: 0.9rem;
+    padding: 10px;
   }
 }

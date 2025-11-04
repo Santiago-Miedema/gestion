@@ -67,41 +67,7 @@ footer {
   justify-content: center;
   align-items: center;
 }
-/* 🔙 Contenedor para asegurar posición arriba a la izquierda */
-.volver-wrapper {
-  display: flex;
-  justify-content: flex-start; /* alinea a la izquierda */
-  margin-left: 20px;
-  margin-top: 10px;
-}
 
-.volver-boton {
-  position: relative; /* hace que el botón se posicione relativo a este contenedor */
-}
-
-.volver-btn {
-  position: fixed;
-  top: 100px;
-  left: 10px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 9999; /* siempre arriba */
-}
-
-.volver-btn:hover {
-  background-color: #009acd;
-}
-
-
-.volver-btn:hover {
-  background-color: #e8f62a;
-  color: #000;
-}
 
 
 

@@ -85,3 +85,60 @@
   color: #777;
   font-style: italic;
 }
+.fila-clickable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.fila-clickable:hover {
+  background-color: #f1f1f1;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-detalle {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cerrar {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cerrar:hover {
+  background-color: #666;
+}
+
+.tabla-detalle {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-detalle th,
+.tabla-detalle td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}

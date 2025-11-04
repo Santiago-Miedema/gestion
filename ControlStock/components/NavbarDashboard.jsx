@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../stylos/NavbarDashboard.css";
 
 function NavbarDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuAbierto, setMenuAbierto] = useState(null);
   const [menuMovil, setMenuMovil] = useState(false);
-  const navbarRef = useRef(null); // 👉 referencia para detectar clics fuera
+  const navbarRef = useRef(null);
 
   const toggleMenu = (menu) => {
     setMenuAbierto(menuAbierto === menu ? null : menu);
@@ -37,9 +38,20 @@ function NavbarDashboard() {
     window.location.reload();
   };
 
+  // 🔹 Click en el logo o título → vuelve al dashboard
+  const handleLogoClick = () => {
+    if (location.pathname !== "/dashboard") {
+      navigate("/dashboard");
+    }
+    setMenuAbierto(null);
+    setMenuMovil(false);
+  };
+
   return (
     <nav className="navbar-dashboard" ref={navbarRef}>
-      <div className="navbar-left">
+      {/* 🔹 Logo o título clickeable */}
+      <div className="navbar-left" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+        {/* Si después querés un logo de imagen: <img src="/logo.png" alt="Logo" className="logo-img" /> */}
         <h1 className="navbar-title">StockManager</h1>
       </div>
 
@@ -93,7 +105,6 @@ function NavbarDashboard() {
               <button onClick={() => handleNavigate("/dashboard/nueva-venta")}>
                 Nueva venta
               </button>
-
             </div>
           )}
         </div>
@@ -107,6 +118,3 @@ function NavbarDashboard() {
 }
 
 export default NavbarDashboard;
-
-
-

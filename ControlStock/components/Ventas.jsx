@@ -5,6 +5,9 @@ import "../stylos/ventasTodo.css";
 function Ventas() {
   const [ventas, setVentas] = useState([]);
   const [filtro, setFiltro] = useState("");
+  const [ventaSeleccionada, setVentaSeleccionada] = useState(null);
+  const [detalles, setDetalles] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
     cargarVentas();
@@ -19,9 +22,24 @@ function Ventas() {
     }
   };
 
+  const cargarDetalles = async (idVenta) => {
+    try {
+      const res = await axios.get(`http://localhost:3001/ventas/${idVenta}/detalles`);
+      setDetalles(res.data);
+      setMostrarModal(true);
+    } catch (err) {
+      console.error("Error al cargar detalles:", err);
+    }
+  };
+
   const ventasFiltradas = ventas.filter((v) =>
     `${v.cliente_nombre} ${v.cliente_apellido}`.toLowerCase().includes(filtro.toLowerCase())
   );
+
+  const handleClickFila = (venta) => {
+    setVentaSeleccionada(venta);
+    cargarDetalles(venta.id_venta);
+  };
 
   return (
     <div className="ventas-container">
@@ -51,33 +69,72 @@ function Ventas() {
           <tbody>
             {ventasFiltradas.length > 0 ? (
               ventasFiltradas.map((v) => (
-                <tr key={v.id_venta}>
+                <tr key={v.id_venta} onClick={() => handleClickFila(v)} className="fila-clickable">
                   <td>{v.id_venta}</td>
                   <td>{v.usuario_nombre}</td>
-                  <td>{v.cliente_nombre} {v.cliente_apellido}</td>
+                  <td>
+                    {v.cliente_nombre} {v.cliente_apellido}
+                  </td>
                   <td>${v.importeTotal}</td>
                   <td>
-                        {v.fecha
-                            ? new Date(v.fecha.replace(" ", "T")).toLocaleDateString("es-AR", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                            })
-                            : "-"}
-                    </td>
+                    <td>{v.fecha?.split(" ")[0] || "-"}</td>
 
-
-
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="no-ventas">No se encontraron ventas</td>
+                <td colSpan="5" className="no-ventas">
+                  No se encontraron ventas
+                </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {/* === Modal Detalle === */}
+      {mostrarModal && ventaSeleccionada && (
+        <div className="modal-overlay" onClick={() => setMostrarModal(false)}>
+          <div className="modal-detalle" onClick={(e) => e.stopPropagation()}>
+            <h3>Detalle de Venta #{ventaSeleccionada.id_venta}</h3>
+            <p>
+              Cliente: {ventaSeleccionada.cliente_nombre} {ventaSeleccionada.cliente_apellido}
+            </p>
+            <p>Total: ${ventaSeleccionada.importeTotal}</p>
+            <hr />
+
+            {detalles.length > 0 ? (
+              <table className="tabla-detalle">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Tiempo Real</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {detalles.map((d, i) => (
+                    <tr key={i}>
+                      <td>{d.nombre_producto}</td>
+                      <td>{d.cantidad}</td>
+                      <td>${d.precio}</td>
+                      <td>{d.fecha}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No hay detalles para esta venta.</p>
+            )}
+
+            <button className="btn-cerrar" onClick={() => setMostrarModal(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
