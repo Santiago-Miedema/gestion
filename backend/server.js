@@ -23,17 +23,6 @@ db.connect(err => {
   console.log("Conectado a MySQL ✅");
 });
 
-// Endpoint de prueba
-app.get("/usuario", (req, res) => {
-  db.query("SELECT * FROM materias", (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error al obtener");
-    } else {
-      res.json(results);
-    }
-  });
-});
 
 app.post("/login", (req, res) => {
   const { nombre, clave } = req.body;
@@ -50,6 +39,8 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
+// ============================
 // 📦 Rutas: CLIENTES
 // ============================
 
@@ -119,10 +110,6 @@ app.put("/clientes/:id_cliente", (req, res) => {
     return res.json({ mensaje: "Cliente actualizado correctamente" });
   });
 });
-
-// ============================
-// 🛒 Rutas: PRODUCTOS
-// ============================
 
  // ============================
 // 🛒 Rutas: PRODUCTOS
@@ -461,6 +448,47 @@ app.post("/verificar-clave", (req, res) => {
   });
 });
 
+// ============================
+// AJUSTAR STOCK
+// ============================
+
+// ✅ Sumar stock
+app.put("/productos/:id/sumar-stock", (req, res) => {
+  const { id } = req.params;
+  const { cantidad } = req.body;
+
+  if (!cantidad || isNaN(cantidad)) {
+    return res.status(400).json({ error: "Cantidad inválida" });
+  }
+
+  const q = "UPDATE productos SET stock = stock + ? WHERE id_producto = ?";
+  db.query(q, [cantidad, id], (err, result) => {
+    if (err) {
+      console.error("Error al sumar stock:", err);
+      return res.status(500).json({ error: "Error al sumar stock" });
+    }
+    res.json({ message: `Stock incrementado en ${cantidad}` });
+  });
+});
+
+// ✅ Ajustar stock
+app.put("/productos/:id/ajustar-stock", (req, res) => {
+  const { id } = req.params;
+  const { nuevoStock } = req.body;
+
+  if (nuevoStock === undefined || isNaN(nuevoStock)) {
+    return res.status(400).json({ error: "Stock inválido" });
+  }
+
+  const q = "UPDATE productos SET stock = ? WHERE id_producto = ?";
+  db.query(q, [nuevoStock, id], (err, result) => {
+    if (err) {
+      console.error("Error al ajustar stock:", err);
+      return res.status(500).json({ error: "Error al ajustar stock" });
+    }
+    res.json({ message: `Stock ajustado a ${nuevoStock}` });
+  });
+});
 
 
 app.listen(3001, () => {

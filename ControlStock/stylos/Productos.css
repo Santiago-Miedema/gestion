@@ -1,14 +1,18 @@
+/* ==========================
+   Productos.css (actualizado)
+   ========================== */
+
 /* Contenedor principal */
 .productos-container {
   padding: 20px;
   background-color: #cefb2a;
-  width: 100%;          /* Mejor usar 100% para responsividad */
-  max-width: 1200px;    /* Máximo ancho deseado */
-  margin: 0 auto;       /* Centrar el contenedor */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   box-sizing: border-box;
   border-radius: 30px;
-  margin-top: 70px;    /* Altura navbar */
-  margin-bottom: 70px; /* Altura footer */
+  margin-top: 70px;
+  margin-bottom: 70px;
   overflow-y: auto;
 }
 
@@ -27,8 +31,8 @@
   background-color: #fff;
   color: #000;
   font-size: 0.95rem;
-  width: 100%;          /* Responsive */
-  max-width: 400px;     /* No muy grande en pantallas grandes */
+  width: 100%;
+  max-width: 400px;
   transition: all 0.3s ease;
 }
 
@@ -41,9 +45,9 @@
 /* Contenedor de tabla con scroll */
 .tabla-scroll {
   width: 100%;
-  overflow-x: auto;      /* Scroll horizontal si es necesario */
-  overflow-y: auto;      /* Scroll vertical si hay muchas filas */
-  max-height: 500px;     /* Ajustar según necesidad */
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 500px;
   border: 1px solid #000;
   border-radius: 6px;
 }
@@ -53,18 +57,23 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  min-width: 700px;      /* Para mantener columnas visibles en scroll horizontal */
+  min-width: 700px;
 }
 
 .tabla-productos th,
 .tabla-productos td {
   border: 1px solid #090909;
   padding: 8px;
+  vertical-align: middle;
+  text-align: center; /* centrado para columnas */
 }
 
 .tabla-productos th {
   background-color: #000;
   color: #cefb2a;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
 }
 
 .tabla-productos tr {
@@ -82,13 +91,174 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Media queries para pantallas pequeñas */
+/* === BOTONES DE GESTIÓN DE STOCK (fila) === */
+.btn-sumar,
+.btn-ajustar,
+.boton-gestion { /* compatibilidad con clases previas */
+  border: none;
+  background-color: #000;
+  color: #cefb2a;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 6px 8px;
+  margin: 0 3px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease, color 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-sumar:hover,
+.boton-gestion:hover {
+  background-color: #cefb2a;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.btn-ajustar {
+  background-color: #000;
+  color: #cefb2a;
+}
+
+.btn-ajustar:hover {
+  background-color: #2196f3; /* pequeño cambio para indicar acción diferente */
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Iconos dentro de botones (ajustan tamaño) */
+.btn-sumar svg,
+.btn-ajustar svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* === MODAL (tarjeta flotante) - coincide con tus clases JSX === */
+/* Overlay ligero y desenfoque */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.12); /* leve oscurecimiento */
+  backdrop-filter: blur(2px);
+  z-index: 1100;
+}
+
+/* Tarjeta centrada */
+.ventana-stock {
+  background-color: #fefefe;
+  border-radius: 16px;
+  padding: 22px 24px;
+  width: 92%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  border: 2px solid #000;
+  animation: popIn 0.22s ease;
+}
+
+/* Título */
+.ventana-stock h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+/* Input dentro del modal */
+.input-stock {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 2px solid #000;
+  text-align: center;
+  font-size: 1rem;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+.input-stock:focus {
+  border-color: #cefb2a;
+  outline: none;
+  box-shadow: 0 0 6px #cefb2a;
+}
+
+/* Contenedor de botones dentro del modal */
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* Botones modal */
+.btn-confirmar,
+.btn-cancelar {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.12s ease, background-color 0.12s ease, color 0.12s ease;
+}
+
+.btn-confirmar {
+  background-color: #000;
+  color: #cefb2a;
+}
+
+.btn-confirmar:hover {
+  background-color: #cefb2a;
+  color: #000;
+  transform: scale(1.03);
+}
+
+.btn-cancelar {
+  background-color: #ddd;
+  color: #000;
+}
+
+.btn-cancelar:hover {
+  background-color: #999;
+  color: #fff;
+  transform: scale(1.03);
+}
+
+/* Animación pop-in */
+@keyframes popIn {
+  from {
+    transform: translateY(6px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Low-stock visual */
+.low-stock {
+  color: #d32f2f;
+  font-weight: 700;
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
   .input-buscador {
     max-width: 100%;
   }
-
   .tabla-productos {
     font-size: 0.85rem;
+  }
+  .ventana-stock {
+    max-width: 360px;
+    padding: 18px;
   }
 }
