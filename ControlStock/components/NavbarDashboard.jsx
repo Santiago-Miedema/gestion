@@ -65,12 +65,9 @@ function NavbarDashboard() {
               <button onClick={() => handleNavigate("/dashboard/productos-criticos")}>
                 Productos críticos
               </button>
-              <button onClick={() => handleNavigate("/dashboard/gestionar-stock")}>
-                Gestionar stock
-              </button> {/* 🔹 Nueva opción */}
               <button onClick={() => handleNavigate("/dashboard/gestionar-productos")}>
                 Gestionar productos
-              </button> {/* 🔹 Nueva opción */}
+              </button>
             </div>
           )}
         </div>
