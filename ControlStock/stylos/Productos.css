@@ -220,6 +220,34 @@
   color: #fff;
 }
 
+.paginacion {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 15px;
+}
+
+.paginacion button {
+  padding: 5px 10px;
+  border: 1px solid #000;
+  background: #000;
+  color: #cefb2a;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.paginacion button:hover {
+  background: #cefb2a;
+  color: #000;
+}
+
+.paginacion button.activo {
+  background: #cefb2a;
+  color: #000;
+  font-weight: bold;
+}
+
+
 @keyframes aparecerModal {
   from {
     opacity: 0;
