@@ -13,7 +13,7 @@ function Productos() {
 
   const [filtro, setFiltro] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
-  const productosPorPagina = 25; // 👈 máximo por página
+  const productosPorPagina = 20;
 
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -36,6 +36,7 @@ function Productos() {
     color: false,
     modelo: false,
   });
+
   const [nuevoValor, setNuevoValor] = useState({
     marca: "",
     categoria: "",
@@ -68,6 +69,7 @@ function Productos() {
         axios.get("http://localhost:3001/colores"),
         axios.get("http://localhost:3001/modelos"),
       ]);
+
       const nuevas = {
         marcas: marcas.data || [],
         categorias: categorias.data || [],
@@ -79,7 +81,10 @@ function Productos() {
     } catch (err) {
       console.error("Error al cargar listas:", err);
       mostrarMensaje("Error al cargar listas", true);
-      return listas;
+      // 🔹 Siempre deja las listas como arrays vacíos
+      const vacias = { marcas: [], categorias: [], colores: [], modelos: [] };
+      setListas(vacias);
+      return vacias;
     }
   };
 
@@ -217,12 +222,10 @@ function Productos() {
     }
   };
 
-  // ✅ Filtro sobre todos los productos
   const productosFiltrados = productos.filter((p) =>
     `${p.marca} ${p.modelo} ${p.categoria}`.toLowerCase().includes(filtro.toLowerCase())
   );
 
-  // ✅ Paginación
   const indiceUltimo = paginaActual * productosPorPagina;
   const indicePrimero = indiceUltimo - productosPorPagina;
   const productosVisibles = productosFiltrados.slice(indicePrimero, indiceUltimo);
@@ -230,7 +233,7 @@ function Productos() {
 
   const cambiarPagina = (num) => {
     setPaginaActual(num);
-    window.scrollTo({ top: 0, behavior: "smooth" }); // volver arriba
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -250,7 +253,7 @@ function Productos() {
           value={filtro}
           onChange={(e) => {
             setFiltro(e.target.value);
-            setPaginaActual(1); // volver a la primera al buscar
+            setPaginaActual(1);
           }}
         />
       </div>
@@ -284,8 +287,8 @@ function Productos() {
                 <td>{p.precio}</td>
                 <td>{p.stock_minimo}</td>
                 <td className="acciones">
-                  <button className="btn-editar" onClick={() => abrirModal(p)}>✏️</button>
-                  <button className="btn-eliminar" onClick={() => eliminarProducto(p.id_producto)}>🗑️</button>
+                  <button className="btn-editar" onClick={() => abrirModal(p)}>✏️Editar</button>
+                  <button className="btn-eliminar" onClick={() => eliminarProducto(p.id_producto)}>🗑️Eliminar</button>
                 </td>
               </tr>
             ))
@@ -297,15 +300,9 @@ function Productos() {
         </tbody>
       </table>
 
-      {/* ✅ Controles de paginación */}
       {totalPaginas > 1 && (
         <div className="paginacion">
-          <button
-            disabled={paginaActual === 1}
-            onClick={() => cambiarPagina(paginaActual - 1)}
-          >
-            ◀
-          </button>
+          <button disabled={paginaActual === 1} onClick={() => cambiarPagina(paginaActual - 1)}>◀</button>
           {[...Array(totalPaginas)].map((_, i) => (
             <button
               key={i + 1}
@@ -315,24 +312,201 @@ function Productos() {
               {i + 1}
             </button>
           ))}
-          <button
-            disabled={paginaActual === totalPaginas}
-            onClick={() => cambiarPagina(paginaActual + 1)}
-          >
-            ▶
-          </button>
+          <button disabled={paginaActual === totalPaginas} onClick={() => cambiarPagina(paginaActual + 1)}>▶</button>
         </div>
       )}
 
-      {/* mensaje flotante */}
       {mensaje && (
         <div className={`modal-exito ${mensaje.esError ? "error" : ""}`}>
           {mensaje.txt}
         </div>
       )}
 
-      {/* el resto del modal queda igual que antes */}
-      {/* ... */}
+         {/* Modal formulario */}
+      {modalAbierto && (
+        <div className="overlay" onClick={cerrarModal}>
+          <div className="form-animado" onClick={(e) => e.stopPropagation()}>
+            <button className="cerrar-form" onClick={cerrarModal}>✖</button>
+            <h3>{modoEdicion ? "Editar producto" : "Nuevo producto"}</h3>
+
+            <form className="form-producto" onSubmit={guardarProducto}>
+              {/* Marca */}
+              <div className="grupo">
+                <label>Marca</label>
+                {!modoNuevo.marca ? (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <select
+                      value={formData.id_marca}
+                      onChange={(e) => handleSelectChange("marca", e.target.value)}
+                      required
+                    >
+                      <option value="">Seleccione Marca</option>
+                      {listas.marcas.map((m) => (
+                        <option key={m.id_marca} value={m.id_marca}>
+                          {m.marca}
+                        </option>
+                      ))}
+                      <option value="nuevo">➕ Nueva marca</option>
+                    </select>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="text"
+                      placeholder="Nueva marca"
+                      value={nuevoValor.marca}
+                      onChange={(e) => setNuevoValor((s) => ({ ...s, marca: e.target.value }))}
+                    />
+                    <button type="button" className="btn-guardar" onClick={() => crearNuevoValor("marca")}>💾</button>
+                    <button type="button" className="btn-cancelar" onClick={() => setModoNuevo((s) => ({ ...s, marca: false }))}>✖</button>
+                  </div>
+                )}
+              </div>
+
+              {/* Categoria */}
+              <div className="grupo">
+                <label>Categoría</label>
+                {!modoNuevo.categoria ? (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <select
+                      value={formData.id_categoria}
+                      onChange={(e) => handleSelectChange("categoria", e.target.value)}
+                      required
+                    >
+                      <option value="">Seleccione Categoría</option>
+                      {listas.categorias.map((c) => (
+                        <option key={c.id_categoria} value={c.id_categoria}>
+                          {c.categoria}
+                        </option>
+                      ))}
+                      <option value="nuevo">➕ Nueva categoría</option>
+                    </select>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="text"
+                      placeholder="Nueva categoría"
+                      value={nuevoValor.categoria}
+                      onChange={(e) => setNuevoValor((s) => ({ ...s, categoria: e.target.value }))}
+                    />
+                    <button type="button" className="btn-guardar" onClick={() => crearNuevoValor("categoria")}>💾</button>
+                    <button type="button" className="btn-cancelar" onClick={() => setModoNuevo((s) => ({ ...s, categoria: false }))}>✖</button>
+                  </div>
+                )}
+              </div>
+
+              {/* Color */}
+              <div className="grupo">
+                <label>Color</label>
+                {!modoNuevo.color ? (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <select
+                      value={formData.id_color}
+                      onChange={(e) => handleSelectChange("color", e.target.value)}
+                      required
+                    >
+                      <option value="">Seleccione Color</option>
+                      {listas.colores.map((c) => (
+                        <option key={c.id_color} value={c.id_color}>
+                          {c.color}
+                        </option>
+                      ))}
+                      <option value="nuevo">➕ Nuevo color</option>
+                    </select>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="text"
+                      placeholder="Nuevo color"
+                      value={nuevoValor.color}
+                      onChange={(e) => setNuevoValor((s) => ({ ...s, color: e.target.value }))}
+                    />
+                    <button type="button" className="btn-guardar" onClick={() => crearNuevoValor("color")}>💾</button>
+                    <button type="button" className="btn-cancelar" onClick={() => setModoNuevo((s) => ({ ...s, color: false }))}>✖</button>
+                  </div>
+                )}
+              </div>
+
+              {/* Modelo */}
+              <div className="grupo">
+                <label>Modelo</label>
+                {!modoNuevo.modelo ? (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <select
+                      value={formData.id_modelo}
+                      onChange={(e) => handleSelectChange("modelo", e.target.value)}
+                      required
+                    >
+                      <option value="">Seleccione Modelo</option>
+                      {listas.modelos.map((m) => (
+                        <option key={m.id_modelo} value={m.id_modelo}>
+                          {m.modelo}
+                        </option>
+                      ))}
+                      <option value="nuevo">➕ Nuevo modelo</option>
+                    </select>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="text"
+                      placeholder="Nuevo modelo"
+                      value={nuevoValor.modelo}
+                      onChange={(e) => setNuevoValor((s) => ({ ...s, modelo: e.target.value }))}
+                    />
+                    <button type="button" className="btn-guardar" onClick={() => crearNuevoValor("modelo")}>💾</button>
+                    <button type="button" className="btn-cancelar" onClick={() => setModoNuevo((s) => ({ ...s, modelo: false }))}>✖</button>
+                  </div>
+                )}
+              </div>
+
+              {/* Resto de campos */}
+              <input
+                name="talle"
+                placeholder="Talle"
+                value={formData.talle}
+                onChange={handleFormChange}
+                required
+              />
+              <input
+                name="stock"
+                type="number"
+                placeholder="Stock"
+                value={formData.stock}
+                onChange={handleFormChange}
+                required
+              />
+              <input
+                name="precio"
+                type="number"
+                placeholder="Precio"
+                value={formData.precio}
+                onChange={handleFormChange}
+                required
+              />
+              <input
+                name="stock_minimo"
+                type="number"
+                placeholder="Stock mínimo"
+                value={formData.stock_minimo}
+                onChange={handleFormChange}
+                required
+              />
+
+              <div className="acciones" style={{ marginTop: 8 }}>
+                <button type="submit" className="btn-guardar">
+                  {modoEdicion ? "Guardar cambios" : "Agregar producto"}
+                </button>
+                <button type="button" className="btn-cancelar" onClick={cerrarModal}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -184,12 +184,12 @@
   cursor: pointer;
 }
 
-.btn-editar {
+/* .btn-editar {
   background: #4caf50;
   color: white;
-}
+} */
 
-.btn-eliminar {
+/* .btn-eliminar {
   background: #e53935;
   color: white;
 }
@@ -202,7 +202,7 @@
 .btn-cancelar {
   background: gray;
   color: white;
-}
+} */
 
 .acciones button:hover {
   opacity: 0.8;
@@ -251,7 +251,7 @@
   border: 1px solid #999;
 }
 
-.btn-eliminar {
+/* .btn-eliminar {
   background-color: #ff3333;
   color: white;
   border: none;
@@ -259,10 +259,14 @@
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
-}
+} */
 
 .btn-eliminar:hover {
   background-color: #d00000;
+}
+.btn-editar:hover {
+  background-color: #000;
+  color: #cefb2a;
 }
 
 /* === Responsive === */
